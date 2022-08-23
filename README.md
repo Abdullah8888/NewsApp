@@ -8,4 +8,4 @@ The project used SPM to install the follwowing dependencies:-
 - SDWebImage
 
 ## Architecture
-The project used MVVM, Navigator pattern and Repository pattern.
+The project used MVVM, Navigator pattern, DI and Repository pattern.
