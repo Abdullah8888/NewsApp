@@ -14,7 +14,7 @@ protocol NewsRepositoryDelegate: AnyObject {
 class NewsRepository: NewsRepositoryDelegate {
     
     let networkService: NetworkServiceDelegate
-    let userDefaultManager: UserDefaultManagerDelegate
+    var userDefaultManager: UserDefaultManagerDelegate
     
     init(networkService: NetworkServiceDelegate, userDefaultManager: UserDefaultManagerDelegate) {
         self.networkService = networkService
@@ -34,6 +34,7 @@ class NewsRepository: NewsRepositoryDelegate {
             networkService.fetch(relativeUrl: "top-headlines?country=us&apiKey=", method: .get, type: News.self) { result in
                 switch result {
                 case .success(let res):
+                    self.userDefaultManager.cacheNews = res
                     completion(.success(res))
                 case .failure(let error):
                     completion(.failure(ErrorModel(message: error.message)))
