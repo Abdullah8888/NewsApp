@@ -9,3 +9,6 @@ The project used SPM to install the follwowing dependencies:-
 
 ## Architecture
 The project used MVVM, Navigator pattern, DI and Repository pattern.
+
+## Cache
+UserDefaults
