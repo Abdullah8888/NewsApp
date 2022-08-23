@@ -9,10 +9,10 @@ import Foundation
 class AppConfiguration {
     
     static let baseUrl: String = {
-        return Bundle.main.object(forInfoDictionaryKey: "BaseUrl") as! String
+        Bundle.main.object(forInfoDictionaryKey: "BaseUrl") as! String
     }()
     
     static let apiKey: String = {
-        return Bundle.main.object(forInfoDictionaryKey: "ApiKey") as! String
+        Bundle.main.object(forInfoDictionaryKey: "ApiKey") as! String
     }()
 }

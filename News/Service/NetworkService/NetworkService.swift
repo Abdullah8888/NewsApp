@@ -16,30 +16,19 @@ struct ErrorModel: Codable, Error {
 }
 
 protocol NetworkServiceDelegate {
-    func fetch<T>(relativeUrl urlString: String, method: HTTPMethod, type: T.Type, payload: [String: Any]?, completionHandler completion: @escaping (Result<T, ErrorModel>) -> Void) where T : Decodable, T : Encodable
+    func fetch<T>(relativeUrl urlString: String, method: HTTPMethod, type: T.Type, completionHandler completion: @escaping (Result<T, ErrorModel>) -> Void) where T : Decodable, T : Encodable
 }
 
 
 class NetworkService: NetworkServiceDelegate {
     
-    func fetch<T>(relativeUrl urlPath: String, method: HTTPMethod, type: T.Type, payload: [String: Any]? = [:], completionHandler completion: @escaping (Result<T, ErrorModel>) -> Void) where T : Decodable, T : Encodable {
-        
-        /*guard let urlEscapedString = "\(AppConfiguration.baseUrl)\(urlPath)\(AppConfiguration.apiKey)"
-            .addingPercentEncoding(withAllowedCharacters: .afURLQueryAllowed) else { return }
-         
-         */
-        
-        guard let url = URL(string: "https://newsapi.org/v2/top-headlines?country=us&apiKey=2d021085c2e64c23927ff485d9f4299b") else {
+    func fetch<T>(relativeUrl urlPath: String, method: HTTPMethod, type: T.Type, completionHandler completion: @escaping (Result<T, ErrorModel>) -> Void) where T : Decodable, T : Encodable {
+ 
+        guard let url = URL(string: AppConfiguration.baseUrl + urlPath + AppConfiguration.apiKey) else {
             return
         }
-        debugPrint("full url is \(url)")
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
-        //request.headers = headers
-        
-        if !(payload?.isEmpty ?? true) {
-            request.httpBody = try? JSONSerialization.data(withJSONObject: payload!)
-        }
         
         AF.request(request).responseDecodable(of: type.self) { response in
             switch response.result {
@@ -60,6 +49,8 @@ class NetworkService: NetworkServiceDelegate {
                 }
                 
             case let .failure(error):
+                let dd = String(data: response.data!, encoding: .utf8)
+                print(dd)
                 let error = ErrorModel(message: error.errorDescription)
                 completion(.failure(error))
             }

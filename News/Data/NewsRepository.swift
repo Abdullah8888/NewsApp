@@ -31,7 +31,7 @@ class NewsRepository: NewsRepositoryDelegate {
             }
         }
         else {
-            networkService.fetch(relativeUrl: "top-headlines?country=us&apiKey=", method: .get, type: News.self, payload: nil) { result in
+            networkService.fetch(relativeUrl: "top-headlines?country=us&apiKey=", method: .get, type: News.self) { result in
                 switch result {
                 case .success(let res):
                     completion(.success(res))
